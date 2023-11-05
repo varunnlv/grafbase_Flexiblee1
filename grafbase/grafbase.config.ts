@@ -36,7 +36,7 @@ const User = mongo
     description: g.string().length({ min: 2, max: 1000 }).optional(),
     githubUrl: g.url().optional(),
     linkedinUrl: g.url().optional(), 
-    //projects: g.relation(() => Project).list().optional() as any,
+    projects: g.relation(() => Project).list().optional() as any,
   })
   .collection('users')
 
