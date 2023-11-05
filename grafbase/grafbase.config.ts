@@ -23,86 +23,40 @@ database: g.env('MONGODB_DATABASE')
 })
 
 
-
-
-
-// const post = g.model('Post', {
+// Define the Post model using mongo.model
+// const postModel = mongo.model('Post', {
 //   title: g.string(),
 //   slug: g.string().unique(),
 //   content: g.string().optional(),
 //   publishedAt: g.datetime().optional(),
-//   comments: g.relation(() => comment).optional().list().optional(),
+//   //comments: g.relation(commentModel).optional().list() as any,
 //   likes: g.int().default(0),
 //   tags: g.string().optional().list().length({ max: 5 }),
-//   author: g.relation(() => user).optional()
-// }).search()
-
-// const comment = g.model('Comment', {
-//   post: g.relation(post),
-//   body: g.string(),
-//   likes: g.int().default(0),
-//   author: g.relation(() => user).optional()
-// })
-
-// Define the Comment model using mongo.model
-const commentModel = mongo.model('Comment', {
-  //post: g.relation('Post').optional() as any,
-  body: g.string(),
-  likes: g.int().default(0),
-  //author: g.relation('User').optional() as any,
-
-  post: g.relation(() => postModel).optional() as any,
-  author: g.relation(() => userModel).optional() as any,
-});
+//   author: g.relation(() => userModel).optional() as any,
+// });
 
 
-// Define the Post model using mongo.model
-const postModel = mongo.model('Post', {
-  title: g.string(),
-  slug: g.string().unique(),
-  content: g.string().optional(),
-  publishedAt: g.datetime().optional(),
-  //comments: g.relation(commentModel).optional().list() as any,
-  likes: g.int().default(0),
-  tags: g.string().optional().list().length({ max: 5 }),
-  //author: g.relation(userModel).optional() as any,
-  comments: g.relation(() => commentModel).optional().list() as any,
-  author: g.relation(() => userModel).optional() as any,
-});
+// @ts-ignore
+const User = mongo.model('User', {
+  name: g.string().length({ min: 2, max: 100 }),
+  email: g.string().unique(),
+  avatarUrl: g.url(),
+  description: g.string().length({ min: 2, max: 1000 }).optional(),
+  githubUrl: g.url().optional(),
+  linkedinUrl: g.url().optional(), 
+  projects: g.relation(() => Project).list().optional() as any,
+})
 
-
-
-
-// Define the User model using mongo.model
-const userModel = mongo.model('User', { 
-  name: g.string(),
-  email: g.email().optional(),
-  //posts: g.relation(postModel).optional().list() as any,
-  //comments: g.relation(commentModel).optional().list() as any,
-
-  posts: g.relation(() => postModel).optional().list() as any,
-  comments: g.relation(() => commentModel).optional().list() as any,
-});
-
-
-
-
-
-
-
-// const user = g.model('User', {
-//   name: g.string(),
-//   email: g.email().optional(),
-//   posts: g.relation(post).optional().list(),
-//   comments: g.relation(comment).optional().list()
-
-//   // Extend models with resolvers
-//   // https://grafbase.com/docs/edge-gateway/resolvers
-//   // gravatar: g.url().resolver('user/gravatar')
-// })
-
-
-
+// @ts-ignore
+const Project = mongo.model('Project', {
+  title: g.string().length({ min: 3 }),
+  description: g.string(), 
+  image: g.url(),
+  liveSiteUrl: g.url(), 
+  githubUrl: g.url(), 
+  //category: g.string().search(),
+  createdBy: g.relation(() => User) as any,
+})
 
 g.datasource(mongo)
 
