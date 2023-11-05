@@ -28,15 +28,24 @@ const address = g.type('Address', {
 
 
 // @ts-ignore
-const Project = mongo.model('Project', {
+const Project = g.model('Project', {
   title: g.string().length({ min: 3 }),
   description: g.string(), 
   image: g.url(),
   liveSiteUrl: g.url(), 
   githubUrl: g.url(), 
   //category: g.string().search(),
-  //createdBy: g.relation(() => User).list().optional() as any,
-}).collection('projects');
+  //createdBy: g.relation(() => User).list().optional(),
+});
+
+
+const project2 = g.type('project2', {
+  title: g.string(),
+  description: g.string(), 
+  image: g.url(),
+  liveSiteUrl: g.url(), 
+  githubUrl: g.url(), 
+})
 
 // const ProjectModel = mongo.model('Project', Project).collection('projects');
 
@@ -49,7 +58,7 @@ const User = mongo
     description: g.string().length({ min: 2, max: 1000 }).optional(),
     githubUrl: g.url().optional(),
     linkedinUrl: g.url().optional(), 
-    projects: g.string().optional().list().optional()
+    projects: g.ref(project2)
   })
   .collection('users')
 
