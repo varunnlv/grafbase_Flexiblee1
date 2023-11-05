@@ -27,31 +27,33 @@ const address = g.type('Address', {
 })
 
 
-const User = mongo
-  .model('User', {
+const createUserModel = () => {
+  return mongo.model('User', {
     name: g.string(),
     email: g.string().optional(),
     address: g.ref(address),
     avatarUrl: g.url(),
     description: g.string().length({ min: 2, max: 1000 }).optional(),
     githubUrl: g.url().optional(),
-    linkedinUrl: g.url().optional(), 
-    //projects: g.relation(() => Project).list().optional() as any,
-  })
-  .collection('users')
+    linkedinUrl: g.url().optional(),
+    projects: g.relation(createProjectModel).list().optional() as any,
+  }).collection('users');
+};
 
+const createProjectModel = () => {
+  return mongo.model('Project', {
+    title: g.string().length({ min: 3 }),
+    description: g.string(),
+    image: g.url(),
+    liveSiteUrl: g.url(),
+    githubUrl: g.url(),
+    createdBy: g.relation(createUserModel).list().optional() as any,
+  }).collection('projects');
+};
 
-
-// // // @ts-ignore
-// mongo.model('Project', {
-//   title: g.string().length({ min: 3 }),
-//   description: g.string(), 
-//   image: g.url(),
-//   liveSiteUrl: g.url(), 
-//   githubUrl: g.url(), 
-//   //category: g.string().search(),
-//   createdBy: g.relation(() => 'User') as any,
-// }).collection('projects')
+// Initialize models
+const User = createUserModel();
+const Project = createProjectModel();
 
 // @ts-ignore
 // const User = mongo.model('User', {
