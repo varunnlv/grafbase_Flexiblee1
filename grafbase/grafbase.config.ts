@@ -1,6 +1,7 @@
 import { g, config, auth } from '@grafbase/sdk';
 
-// @ts
+// @ts-ignore
+// @deprecated The Grafbase database is deprecated and will be sunset soon. Use connectors like Postgres or MongoDB instead.
 const User = g.model('User', {
   name: g.string().length({ min: 2, max: 100 }),
   email: g.string().unique(),
@@ -12,6 +13,8 @@ const User = g.model('User', {
 })
 
 // @ts-ignore
+// @ts-ignore
+// @deprecated The Grafbase database is deprecated and will be sunset soon. Use connectors like Postgres or MongoDB instead.
 const Project = g.model('Project', {
   title: g.string().length({ min: 3 }),
   description: g.string(), 
@@ -22,6 +25,8 @@ const Project = g.model('Project', {
   createdBy: g.relation(() => User),
 })
 
+// @ts-ignore
+// @deprecated The Grafbase database is deprecated and will be sunset soon. Use connectors like Postgres or MongoDB instead.
 export default config({
   schema: g
 })
