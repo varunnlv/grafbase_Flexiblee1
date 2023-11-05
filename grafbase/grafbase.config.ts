@@ -26,14 +26,32 @@ const address = g.type('Address', {
   street: g.string().mapped('street_name')
 })
 
-mongo
+
+const User = mongo
   .model('User', {
     name: g.string(),
     email: g.string().optional(),
-    address: g.ref(address)
+    address: g.ref(address),
+    avatarUrl: g.url(),
+    description: g.string().length({ min: 2, max: 1000 }).optional(),
+    githubUrl: g.url().optional(),
+    linkedinUrl: g.url().optional(), 
+    //projects: g.relation(() => Project).list().optional() as any,
   })
   .collection('users')
 
+
+
+// // // @ts-ignore
+// mongo.model('Project', {
+//   title: g.string().length({ min: 3 }),
+//   description: g.string(), 
+//   image: g.url(),
+//   liveSiteUrl: g.url(), 
+//   githubUrl: g.url(), 
+//   //category: g.string().search(),
+//   createdBy: g.relation(() => 'User') as any,
+// }).collection('projects')
 
 // @ts-ignore
 // const User = mongo.model('User', {
@@ -46,16 +64,6 @@ mongo
 //   projects: g.relation(() => Project).list().optional() as any,
 // }).collection('users')
 
-// // @ts-ignore
-// const Project = mongo.model('Project', {
-//   title: g.string().length({ min: 3 }),
-//   description: g.string(), 
-//   image: g.url(),
-//   liveSiteUrl: g.url(), 
-//   githubUrl: g.url(), 
-//   //category: g.string().search(),
-//   createdBy: g.relation(() => User) as any,
-// }).collection('projects')
 
 g.datasource(mongo)
 
