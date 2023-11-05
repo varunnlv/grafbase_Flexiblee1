@@ -27,6 +27,8 @@ const address = g.type('Address', {
 })
 
 
+
+
 const User = mongo
   .model('User', {
     name: g.string(),
@@ -42,7 +44,7 @@ const User = mongo
 
 
 
-// // // @ts-ignore
+// @ts-ignore
 const Project = mongo.model('Project', {
   title: g.string().length({ min: 3 }),
   description: g.string(), 
@@ -50,7 +52,7 @@ const Project = mongo.model('Project', {
   liveSiteUrl: g.url(), 
   githubUrl: g.url(), 
   //category: g.string().search(),
-  ///createdBy: g.relation(() => User).list().optional() as any,
+  //createdBy: g.relation(() => User).list().optional(),
 }).collection('projects')
 
 // @ts-ignore
