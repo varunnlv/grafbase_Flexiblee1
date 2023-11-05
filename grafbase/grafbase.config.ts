@@ -23,19 +23,6 @@ database: g.env('MONGODB_DATABASE')
 })
 
 
-// Define the Post model using mongo.model
-// const postModel = mongo.model('Post', {
-//   title: g.string(),
-//   slug: g.string().unique(),
-//   content: g.string().optional(),
-//   publishedAt: g.datetime().optional(),
-//   //comments: g.relation(commentModel).optional().list() as any,
-//   likes: g.int().default(0),
-//   tags: g.string().optional().list().length({ max: 5 }),
-//   author: g.relation(() => userModel).optional() as any,
-// });
-
-
 // @ts-ignore
 const User = mongo.model('User', {
   name: g.string().length({ min: 2, max: 100 }),
@@ -45,7 +32,7 @@ const User = mongo.model('User', {
   githubUrl: g.url().optional(),
   linkedinUrl: g.url().optional(), 
   projects: g.relation(() => Project).list().optional() as any,
-})
+}).collection('users')
 
 // @ts-ignore
 const Project = mongo.model('Project', {
@@ -56,7 +43,7 @@ const Project = mongo.model('Project', {
   githubUrl: g.url(), 
   //category: g.string().search(),
   createdBy: g.relation(() => User) as any,
-})
+}).collection('projects')
 
 g.datasource(mongo)
 
