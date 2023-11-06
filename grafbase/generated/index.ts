@@ -16,16 +16,10 @@ export type Schema = {
     __typename?: 'Address';
     street: string;
   };
-  'Project': {
-    __typename?: 'Project';
-    title: string;
-    description: string;
-  };
   'User': {
     __typename?: 'User';
     name: string;
     email: string | null;
-    address?: Schema['Address'];
     description: string | null;
   };
 };
