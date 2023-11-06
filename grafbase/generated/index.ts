@@ -12,17 +12,20 @@
 //  }
 
 export type Schema = {
-  'User': {
-    __typename?: 'User';
-    name: string;
-    email: string;
-    description: string | null;
-    projects?: Array<Schema['Project']> | null;
+  'Address': {
+    __typename?: 'Address';
+    street: string;
   };
   'Project': {
     __typename?: 'Project';
     title: string;
     description: string;
-    createdBy?: Schema['User'];
+  };
+  'User': {
+    __typename?: 'User';
+    name: string;
+    email: string | null;
+    address?: Schema['Address'];
+    description: string | null;
   };
 };

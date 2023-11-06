@@ -35,18 +35,18 @@ const Project = mongo.model('Project', {
   liveSiteUrl: g.url(), 
   githubUrl: g.url(), 
   //category: g.string().search(),
-  //createdBy: g.relation(() => User).list().optional(),
+  //createdBy: g.relation(() => User),
 }).collection('projects');
 
 
-const project2 = g.type('project2', {
-  title: g.string(),
-  description: g.string(), 
-  image: g.url(),
-  liveSiteUrl: g.url(), 
-  githubUrl: g.url(), 
-  //createdBy: g.relation(() => User).list().optional(),
-})
+// const project2 = g.type('project2', {
+//   title: g.string(),
+//   description: g.string(), 
+//   image: g.url(),
+//   liveSiteUrl: g.url(), 
+//   githubUrl: g.url(), 
+//   //createdBy: g.relation(() => User).list().optional(),
+// })
 
 const User = mongo
   .model('User', {
@@ -59,7 +59,9 @@ const User = mongo
     linkedinUrl: g.url().optional(), 
     //projects: g.ref(project2),
   })
-  .collection('users')
+  .collection('users').auth((rules) => {
+    rules.public().read()
+  });
 
 
 
@@ -79,8 +81,17 @@ const User = mongo
 
 g.datasource(mongo)
 
+const jwt = auth.JWT({
+  issuer: 'grafbase',
+  secret:  g.env('NEXTAUTH_SECRET')
+})
+
 export default config({
-  schema: g
+  schema: g,
+  auth: {
+    providers: [jwt],
+    rules: (rules) => rules.private()
+  },
 })
 
 // export default config({
